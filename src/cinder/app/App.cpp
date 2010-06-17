@@ -260,10 +260,47 @@ string App::getOpenFilePath( const string &initialPath, vector<string> extension
 	return string();
 #endif
 }
-
-// TODO: implement method for Windows
-string	App::getOpenFolderPath(const std::string &initialPath)
+	
+vector<string> App::getMultiOpenFilePath(const string &initialPath, vector<string> extensions)
 {
+	vector<string> filenames;
+	
+	bool wasFullScreen = isFullScreen();
+	setFullScreen( false );
+	
+	NSOpenPanel *cinderOpen = [NSOpenPanel openPanel];
+	[cinderOpen setCanChooseFiles:YES];
+	[cinderOpen setCanChooseDirectories:NO];
+	[cinderOpen setAllowsMultipleSelection:YES];
+	
+	NSMutableArray *typesArray = nil;
+	if( ! extensions.empty() ) {
+		typesArray = [NSMutableArray arrayWithCapacity:extensions.size()];
+		for( vector<string>::const_iterator extIt = extensions.begin(); extIt != extensions.end(); ++extIt )
+			[typesArray addObject:[NSString stringWithUTF8String:extIt->c_str()]];
+	}
+	
+	NSString *directory = initialPath.empty() ? nil : [[NSString stringWithUTF8String:initialPath.c_str()] stringByExpandingTildeInPath];
+	int resultCode = [cinderOpen runModalForDirectory:directory file:nil types:typesArray];	
+	
+	setFullScreen( wasFullScreen );
+	restoreWindowContext();
+	
+	if( resultCode == NSOKButton ) {
+		NSArray *files = [cinderOpen filenames];
+		for (int i=0; i<[files count]; i++)
+		{
+			NSString *filename = [[files objectAtIndex: i] absoluteString];
+			filenames.push_back([filename UTF8String]);
+		}
+	}
+	
+	return filenames;
+}	
+
+string App::getFolderPath( const string &initialPath )
+{
+#if defined( CINDER_MAC )
 	bool wasFullScreen = isFullScreen();
 	setFullScreen(false);
 	
@@ -284,6 +321,9 @@ string	App::getOpenFolderPath(const std::string &initialPath)
 	}
 	else
 		return string();
+#else
+	return AppImplMsw::getFolderPath( initialPath );
+#endif
 }
 
 string	App::getSaveFilePath( const string &initialPath, vector<string> extensions )
