@@ -290,7 +290,7 @@ vector<string> App::getMultiOpenFilePath(const string &initialPath, vector<strin
 		NSArray *files = [cinderOpen filenames];
 		for (int i=0; i<[files count]; i++)
 		{
-			NSString *filename = [[files objectAtIndex: i] absoluteString];
+			NSString *filename = [files objectAtIndex: i];
 			filenames.push_back([filename UTF8String]);
 		}
 	}
