@@ -86,6 +86,8 @@ class App {
 		Area	getWindowBounds() const { return Area( 0, 0, mWindowSizeX, mWindowSizeY ); }
 		//! the title of the app reflected in ways particular to the app type and platform (such as its Window or menu)
 		void	setTitle( const std::string &title ) { mTitle = title; }
+		
+		std::string	getTitle() const { return mTitle; }
 
 		//! maximum frameRate of the application specified in frames per second
 		float	getFrameRate() const { return mFrameRate; }
@@ -226,7 +228,7 @@ class App {
 		If the active app is in full-screen mode it will temporarily switch to windowed-mode to present the dialog.
 		\return the selected file path or an empty string if the user cancelled. **/
 	std::string		getOpenFilePath( const std::string &initialPath = "", std::vector<std::string> extensions = std::vector<std::string>() );
-	std::vector<std::string>	getMultiOpenFilePath( const std::string &initialPath, std::vector<std::string> extensions = std::vector<std::string>() );
+	std::vector<std::string>	getMultiOpenFilePath( const std::string &initialPath = "", std::vector<std::string> extensions = std::vector<std::string>() );
 	//! Presents the user with a folder-open dialog and returns the selected folder.
 	std::string		getFolderPath(const std::string &initialPath="");
 	//! Presents the user with a file-save dialog and returns the selected file path.

@@ -37,8 +37,10 @@
 	
 	[NSApplication sharedApplication];
 	
-	[NSApp setMainMenu:[[NSMenu alloc] init]];	
-	[self setApplicationMenu];
+	[NSApp setMainMenu:[[NSMenu alloc] init]];
+	
+	std::string appTitle = aApp->getSettings().getTitle();
+	[self setApplicationMenu: [NSString stringWithUTF8String:appTitle.c_str()]];
 	[NSApp setDelegate:self];
 	
 	app = aApp;
@@ -179,15 +181,15 @@
 }
 
 // application menu stolen from SDLMian.m
-- (void)setApplicationMenu
+- (void)setApplicationMenu: (NSString *)appName
 {
     /* warning: this code is very odd */
     NSMenu *appleMenu;
     NSMenuItem *menuItem;
     NSString *title;
-    NSString *appName;
+    // NSString *appName;
     
-    appName = @"CinderApplication";
+    // appName = @"CinderApplication";
     appleMenu = [[NSMenu alloc] initWithTitle:@""];
     
     /* Add menu items */

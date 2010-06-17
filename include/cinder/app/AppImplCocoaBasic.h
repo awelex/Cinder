@@ -51,7 +51,7 @@
 }
 
 - (id)init:(cinder::app::AppBasic*)aApp;
-- (void)setApplicationMenu;
+- (void)setApplicationMenu:(NSString *)appName;
 - (void)startAnimationTimer;
 - (void)applicationWillTerminate:(NSNotification *)notification;
 - (void)quit;
